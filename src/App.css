@@ -1,0 +1,66 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+:root {
+  --color-primary: black;
+  --color-secondary: green;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+}
+
+small {
+  font-size: 11px;
+}
+
+button {
+  border: 0;
+}
+
+button:hover,
+button:focus {
+  outline: none !important;
+  border: 0 !important;
+}
+
+body {
+  display: flex !important;
+  flex-direction: column;
+  place-items: inherit !important;
+  min-height: calc(100vh - 20px) !important;
+  padding-inline: 15px;
+  font-family: 'Roboto', sans-serif;
+}
+
+textarea {
+  font-family: 'Roboto', sans-serif;
+}
+
+.chat-row {
+  display: flex;
+  align-items: flex-end;
+  column-gap: 10px;
+  margin-bottom: 10px;
+  clear: both;
+}
+
+.chat-dir-lrt {
+  justify-content: flex-start;
+}
+
+.chat-dir-rtl {
+  justify-content: flex-end;
+}
+
+.chat-input {
+  position: absolute;
+  bottom: 10px;
+  left: 0;
+  right: 0;
+  padding-inline: 15px;
+}
