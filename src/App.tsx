@@ -1,33 +1,36 @@
-import Chat from './components/bubble/Bubble';
-import './App.css';
-import { Header } from './components/header/Header';
-import { Footer } from './components/footer/Footer';
-import * as React from 'react';
+import Chat from "./components/bubble/Bubble";
+import "./App.css";
+import { Header } from "./components/header/Header";
+import { Footer } from "./components/footer/Footer";
+import * as React from "react";
+import ScrollToBottom from "react-scroll-to-bottom";
 
-const CURR_USER = 'me';
+const DATE = new Date();
+
+const CURR_USER = "me";
 
 const DATA = [
   {
-    message: 'Hi there, How are you? Did you completed the task I requested?',
-    userId: 'you',
+    message: "Hi there, How are you? Did you completed the task I requested?",
+    userId: "you",
     createdOn: 1682094367,
   },
   {
-    message: 'Yes I have compeleted the tasks.',
-    userId: 'me',
+    message: "Yes I have compeleted the tasks.",
+    userId: "me",
     createdOn: 1682094367,
-    status: 'seen',
+    status: "delivered",
   },
   {
     message: `That's great!`,
-    userId: 'you',
+    userId: "you",
     createdOn: 1682094367,
   },
   {
-    message: 'Yup!',
-    userId: 'me',
+    message: "Yup!",
+    userId: "me",
     createdOn: 1682094367,
-    status: 'failed',
+    status: "seen",
   },
 ];
 
@@ -37,11 +40,13 @@ function App() {
       message?: string;
       userId?: string;
       createdOn?: number;
-      status?: 'delivered' | 'seen' | 'failed';
+      status?: "delivered" | "seen" | "failed" | "waiting";
     }>
   >();
 
   const [Typing, setTyping] = React.useState(true);
+
+  const ChatContainerRef = React.useRef<HTMLDivElement>(null);
 
   React.useEffect(() => {
     setMessages(DATA as any);
@@ -49,35 +54,75 @@ function App() {
 
   return (
     <>
-      <Header />
-      <div className="chat-container">
-        {Messages?.map((message, index) => {
-          const MY_MESSAGE = message.userId === CURR_USER;
+      <div className="main">
+        <div className="wrapper">
+          <Header />
+          <main className="chat-container" ref={ChatContainerRef}>
+            <div style={{ flex: "1 1 0%", overflow: "hidden" }}>
+              <ScrollToBottom
+                mode="bottom"
+                className="main-scrollar"
+                scrollViewClassName="scrollview"
+                followButtonClassName="followBtn"
+              >
+                <div style={{ height: 10 }}></div>
+                {Messages?.map((message, index) => {
+                  const MY_MESSAGE = message.userId === CURR_USER;
 
-          return (
-            <div
-              className={`chat-row ${
-                MY_MESSAGE ? 'chat-dir-rtl' : 'chat-dir-ltr'
-              }`}
-              key={index}
-            >
-              {!MY_MESSAGE && <Chat.Avatar />}
-              <Chat.Bubble inverted={MY_MESSAGE} {...message} />
+                  return (
+                    <div
+                      className={`chat-row ${
+                        MY_MESSAGE ? "chat-dir-rtl" : "chat-dir-ltr"
+                      }`}
+                      key={index}
+                    >
+                      {!MY_MESSAGE && <Chat.Avatar />}
+                      <Chat.Bubble sender={MY_MESSAGE} {...message} />
+
+                      {MY_MESSAGE &&
+                        (message.status === "delivered" ? (
+                          <i className="ph-bold ph-check-circle"></i>
+                        ) : message.status === "seen" ? (
+                          <i className="ph-fill ph-check-circle"></i>
+                        ) : message.status === "failed" ? (
+                          <i className="ph-bold ph-warning-circle"></i>
+                        ) : (
+                          <i className="ph-bold ph-clock"></i>
+                        ))}
+                    </div>
+                  );
+                })}
+
+                {Typing && (
+                  <div className={`chat-row chat-dir-ltr`}>
+                    <Chat.Avatar />
+                    <Chat.Bubble typing={true} />
+                  </div>
+                )}
+
+                <div style={{ height: 10 }}></div>
+              </ScrollToBottom>
             </div>
-          );
-        })}
 
-        {Typing && (
-          <div className={`chat-row chat-dir-ltr`}>
-            <Chat.Avatar />
-            <Chat.Bubble typing={true} />
-          </div>
-        )}
-      </div>
+            <Footer
+              onSubmit={(_, message, reset, focus) => {
+                setTyping(false);
+                setMessages((prev) => [
+                  ...prev!,
+                  {
+                    message: message,
+                    createdOn: Math.floor(DATE.getTime() / 1000),
+                    userId: "me",
+                    status: "delivered",
+                  },
+                ]);
 
-      {/* Send Message Input */}
-      <div className="chat-input">
-        <Footer />
+                reset();
+                focus();
+              }}
+            />
+          </main>
+        </div>
       </div>
     </>
   );

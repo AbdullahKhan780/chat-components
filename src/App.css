@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
 
 :root {
   --color-primary: black;
@@ -19,7 +19,9 @@ small {
 }
 
 button {
+  background-color: transparent;
   border: 0;
+  cursor: pointer;
 }
 
 button:hover,
@@ -28,17 +30,74 @@ button:focus {
   border: 0 !important;
 }
 
+.icon-size {
+  font-size: 25px;
+}
+
 body {
-  display: flex !important;
+  margin: 0;
+  font-family: "Roboto", sans-serif;
+  line-height: inherit;
+}
+
+body,
+html {
+  height: 100%;
+}
+
+#root {
+  height: 100%;
+}
+
+.main {
+  position: relative;
+  display: flex;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+}
+
+.wrapper {
+  display: flex;
   flex-direction: column;
-  place-items: inherit !important;
-  min-height: calc(100vh - 20px) !important;
-  padding-inline: 15px;
-  font-family: 'Roboto', sans-serif;
+  height: 100%;
+  max-width: 100%;
+  flex: 1 1 0%;
 }
 
 textarea {
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
+  font-size: 16px;
+}
+
+.chat-container {
+  position: relative;
+  height: 100%;
+  width: 100%;
+
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  flex: 1 1 0%;
+
+  background-color: rgba(125, 125, 125, 0.07);
+  transition-duration: 0.15s;
+  transition-property: width;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.main-scrollar {
+  height: 100%;
+}
+
+.scrollview {
+  width: auto !important;
+  padding: 0px 15px 0 15px;
+}
+
+.followBtn {
+  display: none;
 }
 
 .chat-row {
@@ -55,12 +114,4 @@ textarea {
 
 .chat-dir-rtl {
   justify-content: flex-end;
-}
-
-.chat-input {
-  position: absolute;
-  bottom: 10px;
-  left: 0;
-  right: 0;
-  padding-inline: 15px;
 }

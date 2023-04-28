@@ -13,7 +13,7 @@
 .chat-bubble {
   max-width: 300px;
   height: fit-content;
-  background-color: rgb(241, 241, 241);
+  background-color: rgb(233, 233, 233);
   color: black;
   padding: 5px 10px 5px 10px;
   border-top-left-radius: 15px;
@@ -42,9 +42,8 @@
 }
 
 .chat-bubble-status {
-  font-size: 11px;
+  margin-top: 3px;
   color: gray;
-  text-transform: capitalize;
   float: right;
 }
 

@@ -1,5 +1,5 @@
-import * as React from 'react';
-import './Bubble.css';
+import * as React from "react";
+import "./Bubble.css";
 
 const Chat: React.FC<{ children: React.ReactNode }> & {
   Bubble: typeof Bubble;
@@ -7,61 +7,59 @@ const Chat: React.FC<{ children: React.ReactNode }> & {
 } = ({ children }) => <>{children}</>;
 
 interface BubbleI {
-  inverted?: boolean;
+  sender?: boolean;
   message?: string;
   typing?: boolean;
-  status?: 'seen' | 'delivered' | 'failed';
+  status?: "waiting" | "seen" | "delivered" | "failed";
   createdOn?: number;
 }
 
 const Bubble: React.FC<BubbleI> = ({
-  inverted = false,
   typing = false,
+  sender,
   message,
   status,
   createdOn,
 }) => {
-  const [Inverted, setInverted] = React.useState(inverted);
   const [Typing, setTyping] = React.useState(typing);
 
   const TimeStampFormater = (
     time: number,
-    returnType: 'time' | 'date' | 'mix' = 'time'
+    returnType: "time" | "date" | "mix" = "time"
   ) =>
     React.useMemo(() => {
       const DATE = new Date(time);
 
       const CURR_TIME = DATE.toLocaleTimeString([], {
         hour12: true,
-        hour: '2-digit',
-        minute: '2-digit',
+        hour: "2-digit",
+        minute: "2-digit",
       });
 
       const CURR_DATE = DATE.toLocaleDateString([], {
-        weekday: 'short',
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric',
+        weekday: "short",
+        year: "numeric",
+        month: "short",
+        day: "numeric",
       });
 
-      return returnType === 'time'
+      return returnType === "time"
         ? `${CURR_TIME}`
-        : returnType === 'date'
+        : returnType === "date"
         ? `${CURR_DATE}`
         : `${CURR_DATE} ${CURR_TIME}`;
     }, [createdOn]);
 
   React.useEffect(() => {
-    setInverted(inverted);
     setTyping(typing);
-  }, [inverted, typing]);
+  }, [typing]);
 
   return (
     <div>
       <div className="chat-bubble-wrapper">
         <div
           className={`chat-bubble ${
-            Inverted ? 'chat-bubble-radius-inverted' : ''
+            sender ? "chat-bubble-radius-inverted" : ""
           }`}
         >
           {Typing ? (
@@ -80,11 +78,8 @@ const Bubble: React.FC<BubbleI> = ({
           )}
         </div>
       </div>
-      {Inverted && status !== 'failed' && (
-        <small className="chat-bubble-status">{status}</small>
-      )}
 
-      {status === 'failed' && (
+      {status === "failed" && (
         <button className="chat-bubble-retry">Retry</button>
       )}
     </div>
@@ -93,7 +88,7 @@ const Bubble: React.FC<BubbleI> = ({
 
 const Avatar: React.FC = ({
   ...rest
-}: Omit<React.HTMLAttributes<HTMLImageElement>, 'className'>) => {
+}: Omit<React.HTMLAttributes<HTMLImageElement>, "className">) => {
   return (
     <img
       className="chat-bubble-avatar"
